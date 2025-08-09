@@ -32,6 +32,7 @@ A comprehensive Library Management System built with Django REST Framework featu
 - Django, Django REST Framework
 - SimpleJWT for JWT authentication
 - drf_yasg for Swagger API Documentation
+- django_extensions for ER Diagram generation
 
 ## 📄 API Documentation (Swagger)
 
@@ -108,7 +109,7 @@ App Responsibilities:
 
 #### Browse Books
 `GET /api/books/`
-- Query params: `?author=<author_id>&category=<category_id>`
+- Query params: `?author=<author_name>&category=<category_name>`
 
 #### Book Details
 `GET /api/books/{id}/`

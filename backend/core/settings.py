@@ -33,6 +33,7 @@ EXTERNAL_APPS = [
     'rest_framework',
     'drf_yasg',
     'rest_framework_simplejwt',
+    'django_extensions',
 
     # Local apps
     'apps.borrow',
