@@ -10,11 +10,16 @@ from datetime import timedelta
 
 from .models import BorrowModel
 from .serializers import BorrowSerializer, ReturnSerializer 
+from apps.catalog.models import BookModel
+
+from drf_yasg.utils import swagger_auto_schema
+
 
 # Create your views here.
 class BorrowView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
+    @swagger_auto_schema(request_body=BorrowSerializer)
     def post(self, request):
         book_id = request.data.get('book_id')
         if not book_id:
@@ -44,7 +49,7 @@ class BorrowView(APIView):
             borrow_record = BorrowModel.objects.create(
                 user=user,
                 book=book,
-                due_date= timezone.now() + timedelta(days=14).date()
+                due_date=(timezone.now() + timedelta(days=14)).date()  # Ensure this is a date object
             )
 
         serializer = BorrowSerializer(borrow_record)
