@@ -8,9 +8,12 @@ class BorrowSerializer(serializers.ModelSerializer):
     class Meta:
         model = BorrowModel
         fields = ['id', 'book_id', 'borrow_date', 'due_date', 'return_date']
-        read_only_fields = ['id', 'borrow_date', 'due_date', 'return_date']
+        read_only_fields = ['id', 'due_date', 'return_date', 'borrow_date']  # <-- Remove 'borrow_date' from read_only_fields
 
 class ReturnSerializer(serializers.ModelSerializer):
+    borrow_id = serializers.IntegerField(write_only=True)
+
     class Meta:
         model = BorrowModel
-        fields = ['id', 'return_date']
+        fields = ['id', 'return_date', 'borrow_id']
+        read_only_fields = ['id', 'return_date']

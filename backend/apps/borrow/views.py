@@ -49,6 +49,7 @@ class BorrowView(APIView):
             borrow_record = BorrowModel.objects.create(
                 user=user,
                 book=book,
+                borrow_date=timezone.now().date(),  # <-- Add this line
                 due_date=(timezone.now() + timedelta(days=14)).date()  # Ensure this is a date object
             )
 
@@ -61,12 +62,16 @@ class BorrowView(APIView):
         borrow_records = BorrowModel.objects.filter(user=user)
         serializer = BorrowSerializer(borrow_records, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+
+# ------------------Reaturn View------------------
 
 class ReturnView(APIView):
+    permission_classes = [permissions.IsAuthenticated]  
 
+    @swagger_auto_schema(request_body=ReturnSerializer)
     def post(self, request):
-        permission_classes = [permissions.IsAuthenticated]
-        
         borrow_id = request.data.get('borrow_id')
         if not borrow_id:
             return Response({"error": "Borrow ID is required."}, status=status.HTTP_400_BAD_REQUEST)
@@ -79,7 +84,7 @@ class ReturnView(APIView):
             return Response({"error": "This book is already returned."}, status=status.HTTP_400_BAD_REQUEST)
 
         # Mark the book as returned
-        borrow_record.return_date = timezone.now()
+        borrow_record.return_date = timezone.now().date()  
         borrow_record.save()
 
         # Update the book's available copies

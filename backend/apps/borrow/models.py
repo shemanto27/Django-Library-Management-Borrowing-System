@@ -6,7 +6,7 @@ from apps.catalog.models import BookModel
 class BorrowModel(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(BookModel, on_delete=models.CASCADE)
-    borrow_date = models.DateField(auto_now_add=True)
+    borrow_date = models.DateField(null=True, blank=True)  
     due_date = models.DateField(null=True, blank=True)
     return_date = models.DateField(null=True, blank=True)
 
